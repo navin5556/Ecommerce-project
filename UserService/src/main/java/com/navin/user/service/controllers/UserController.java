@@ -24,7 +24,7 @@ public class UserController
         return ResponseEntity.status(HttpStatus.CREATED).body(user1);
     }
 
-    //single useer get
+    //single user get
     @GetMapping("/{userId}")
     public ResponseEntity<User> getSingleUser(@PathVariable String userId){
         User user = userService.getUser(userId);
