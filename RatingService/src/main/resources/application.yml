@@ -7,7 +7,7 @@ spring:
       database: microservices
 
 server:
-  port: 8083
+  port: 8089
 
 eureka:
   client:
