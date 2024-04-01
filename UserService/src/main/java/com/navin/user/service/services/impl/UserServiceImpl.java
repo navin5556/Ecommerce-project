@@ -4,6 +4,7 @@ import com.navin.user.service.entities.Hotel;
 import com.navin.user.service.entities.Rating;
 import com.navin.user.service.entities.User;
 import com.navin.user.service.exceptions.ResourceNotFoundException;
+import com.navin.user.service.external.service.HotelService;
 import com.navin.user.service.repositories.UserRepository;
 import com.navin.user.service.services.UserService;
 import org.slf4j.Logger;
@@ -28,6 +29,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private RestTemplate restTemplate;
+
+    @Autowired
+    private HotelService hotelService;
 
     private Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
@@ -62,7 +66,8 @@ public class UserServiceImpl implements UserService {
         List<Rating> ratingList = ratings.stream().map(rating -> {
             //api call to hotel service to get the hotel
             // http://localhost:8082/hotels/aee1f027-83ec-4701-8930-4106724b949c
-            Hotel hotel = restTemplate.getForObject("http://HOTELSERVICE/hotels/"+rating.getHotelId(), Hotel.class);
+        // Hotel hotel = restTemplate.getForObject("http://HOTELSERVICE/hotels/"+rating.getHotelId(), Hotel.class);
+            Hotel hotel = hotelService.getHotel(rating.getHotelId());
             rating.setHotel(hotel);
             return rating;
         }).collect(Collectors.toList());
