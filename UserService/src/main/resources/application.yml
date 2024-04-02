@@ -55,6 +55,13 @@ resilience4j:
         permitted-number-of-calls-in-half-open-state: 3
         sliding-window-size: 10
         sliding-window-type: count_based
+  retry:
+    instances:
+      ratingHotelService:
+        max-attempts: 3
+        wait-duration:
+          seconds: 5
+
 
 
 #if rating service is down in that case circuit breaker is good but in case of rating service is slow then we should retry
