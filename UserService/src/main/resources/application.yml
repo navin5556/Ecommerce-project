@@ -28,3 +28,34 @@ spring:
 #      defaultZone: http://localhost:8761/eureka
 #  instance:
 #    prefer-ip-address: true
+
+#below is the configuration for actuator
+management:
+  health:
+    circuitbreakers:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      show-details: always
+resilience4j:
+  circuitbreaker:
+    instances:
+      ratingHotelBreaker:
+        register-health-indicator: true
+        event-consumer-buffer-size: 10
+        failure-rate-threshold: 50
+        minimum-number-of-calls: 5
+        automatic-transition-from-open-to-half-open-enabled: true
+        wait-duration-in-open-state:
+          seconds: 6
+        permitted-number-of-calls-in-half-open-state: 3
+        sliding-window-size: 10
+        sliding-window-type: count_based
+
+
+#if rating service is down in that case circuit breaker is good but in case of rating service is slow then we should retry
+#retry is also a module of resiliance4j
